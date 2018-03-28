@@ -11,20 +11,20 @@ class List extends Component {
 		const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 		const contractInstance = getContractConnection();
 		const upvoteTargetAddress = value.row.address;
-		const upvoteData = contractInstance.upvote.getData(upvoteTargetAddress);
+		// const upvoteData = contractInstance.upvote.getData(upvoteTargetAddress);
 
-		const fromAddress = web3.eth.accounts[0];
-		console.log('upvoting');
-		console.log('from:', fromAddress);
-		console.log('to:', upvoteTargetAddress);
+		// const fromAddress = web3.eth.accounts[0];
+		// console.log('upvoting');
+		// console.log('from:', fromAddress);
+		// console.log('to:', upvoteTargetAddress);
 
-        web3.eth.sendTransaction({
-            to: contractAddress,
-            from: fromAddress,
-            data: upvoteData,
-        });
+		// web3.eth.sendTransaction({
+		// 	to: contractAddress,
+		// 	from: fromAddress,
+		// 	data: upvoteData,
+		// });
 
-		console.log('upvote', value.row);
+		this.props.updateDataState();
 	}
 	handleDownvote(value) {
 		console.log('downvote', value.row);
@@ -36,10 +36,21 @@ class List extends Component {
 			<div className="List">
 				<ReactTable
 					data={data}
+					defaultSorted={[
+						{
+							id: "score",
+							desc: true
+						}
+					]}
 					columns={[
 						{
 							Header: " Data",
 							columns: [
+								{
+									Header: "Activity",
+									accessor: "frequency",
+									Cell: (value => <BlinkingDot frequency={value.row.frequency} />),
+								},
 								{
 									Header: "Score",
 									accessor: "score",
@@ -51,11 +62,6 @@ class List extends Component {
 								{
 									Header: "Address",
 									accessor: "address",
-								},
-								{
-									Header: "Frequency",
-									accessor: "frequency",
-									Cell: (value => <BlinkingDot frequency={value.row.frequency}/>),
 								},
 							],
 						},
