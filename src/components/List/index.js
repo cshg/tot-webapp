@@ -50,10 +50,12 @@ class List extends Component {
 									Header: "Activity",
 									accessor: "frequency",
 									Cell: (value => <BlinkingDot frequency={value.row.frequency} />),
+									maxWidth: 70,
 								},
 								{
 									Header: "Score",
 									accessor: "score",
+									maxWidth: 80,
 								},
 								{
 									Header: "Name",
@@ -72,11 +74,13 @@ class List extends Component {
 									Header: "Upvote",
 									accessor: "upvote",
 									Cell: (value => <button onClick={() => this.handleUpvote(value)}>+</button>),
+									maxWidth: 100,
 								},
 								{
 									Header: "Downvote",
 									accessor: "downvote",
 									Cell: (value => <button onClick={() => this.handleDownvote(value)}>-</button>),
+									maxWidth: 100,
 								}
 							]
 						},
