@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 
 import './style.css';
-import mockData from './mockData';
 
 import getContractConnection, { contractAddress } from '../Contract';
 import List from '../List';
@@ -51,7 +50,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log('mockData', mockData);
         return (
             <div className="Home">
                 <h2>Home</h2>
