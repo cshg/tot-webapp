@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Web3 from 'web3';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 import './style.css';
 
@@ -12,7 +14,7 @@ class Home extends Component {
         this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
         this.state = {
             currBlock: null,
-            currentCurator: null,
+            currentCurator: this.web3.eth.accounts[0],
             accounts: [],
             data: [],
         }
@@ -20,6 +22,11 @@ class Home extends Component {
 
     componentWillMount() {
         this.updateDataFromChain();
+    }
+
+    handleCuratorSelection = (selectedCurator) => {
+        this.setState({ currentCurator: selectedCurator });
+
     }
 
     updateDataFromChain = () => {
@@ -50,11 +57,20 @@ class Home extends Component {
     }
 
     render() {
+        const curatorsSelection = this.state.accounts.map(address => ({ value: address, label: address }));
         return (
             <div className="Home">
-                <h2>Home</h2>
-                <p>Current Block: {this.state.currBlock}</p>
-                <div> Current Curator: </div>
+                <div>
+                    <p>Current Block: {this.state.currBlock}</p>
+                    <p className="Curator"> Current Curator:
+                    <Select
+                            name="curator-selector"
+                            value={this.state.currentCurator}
+                            onChange={this.handleCuratorSelection}
+                            options={curatorsSelection}
+                        />
+                    </p>
+                </div>
                 <div className="List">
                     <List data={this.state.data} updateDataState={this.updateDataFromChain} />
                 </div>
