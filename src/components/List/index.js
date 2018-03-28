@@ -28,6 +28,7 @@ class List extends Component {
 							desc: true
 						}
 					]}
+					className="-striped"
 					columns={[
 						{
 							Header: " Data",
@@ -41,10 +42,12 @@ class List extends Component {
 								{
 									Header: "Name",
 									accessor: "name",
+									style: { fontSize: 20, alignSelf: 'center' }
 								},
 								{
 									Header: "Address",
 									accessor: "address",
+									style: { fontSize: 16, alignSelf: 'center' }
 								},
 
 							],
@@ -62,6 +65,7 @@ class List extends Component {
 									Header: "Score",
 									accessor: "score",
 									maxWidth: 80,
+									style: { fontSize: 28, alignSelf: 'center' }
 								},
 								{
 									Header: "Downvote",

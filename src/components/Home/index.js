@@ -97,7 +97,7 @@ class Home extends Component {
                         />
                     </div>
                     <div>ETH Balance: {this.state.currentEthBalance}</div>
-                    <div>ToT Balance: {this.state.currentToTBalance}</div>
+                    <div style={{ fontSize: 24 }}>ToT Balance: {this.state.currentToTBalance}</div>
                 </div>
                 <div className="List">
                     <List data={this.state.data} sendUpvote={this.sendUpvote} sendDownvote={this.sendDownvote} />
