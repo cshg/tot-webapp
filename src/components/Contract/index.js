@@ -14,4 +14,6 @@ function getContractConnection() {
     return weeveRepoCoinContractInstance;
 }
 
+export const contractAddress = WEEVE_REP_COIN_CONTRACT_ADDRESS;
+
 export default getContractConnection;

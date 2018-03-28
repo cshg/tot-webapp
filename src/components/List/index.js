@@ -3,8 +3,27 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import BlinkingDot from '../BlinkingDot';
 
+import getContractConnection, { contractAddress } from '../Contract';
+import Web3 from 'web3';
+
 class List extends Component {
 	handleUpvote(value) {
+		const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+		const contractInstance = getContractConnection();
+		const upvoteTargetAddress = value.row.address;
+		const upvoteData = contractInstance.upvote.getData(upvoteTargetAddress);
+
+		const fromAddress = web3.eth.accounts[0];
+		console.log('upvoting');
+		console.log('from:', fromAddress);
+		console.log('to:', upvoteTargetAddress);
+
+        web3.eth.sendTransaction({
+            to: contractAddress,
+            from: fromAddress,
+            data: upvoteData,
+        });
+
 		console.log('upvote', value.row);
 	}
 	handleDownvote(value) {
