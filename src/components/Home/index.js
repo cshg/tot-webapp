@@ -12,10 +12,12 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        const initialAccount = this.web3.eth.accounts[0];
         this.state = {
-            currBlock: null,
-            currentCurator: this.web3.eth.accounts[0],
-            accounts: [],
+            currBlock: this.web3.eth.blockNumber,
+            currentCuratorAddress: initialAccount,
+            currentBalance: this.web3.fromWei(this.web3.eth.getBalance(initialAccount).toNumber()),
+            accounts: this.web3.eth.accounts,
             data: [],
         }
     }
@@ -25,8 +27,11 @@ class Home extends Component {
     }
 
     handleCuratorSelection = (selectedCurator) => {
-        this.setState({ currentCurator: selectedCurator });
-
+        const selectedCuratorAddress = selectedCurator.value;
+        this.setState({
+            currentCuratorAddress: selectedCuratorAddress,
+            currentBalance: this.web3.fromWei(this.web3.eth.getBalance(selectedCuratorAddress).toNumber()),
+        });
     }
 
     updateDataFromChain = () => {
@@ -48,12 +53,7 @@ class Home extends Component {
             })
         });
 
-        this.setState({
-            currentCurator: this.web3.eth.accounts[0],
-            currBlock: this.web3.eth.blockNumber,
-            accounts: this.web3.eth.accounts,
-            data: data,
-        });
+        this.setState({ data });
     }
 
     render() {
@@ -62,14 +62,16 @@ class Home extends Component {
             <div className="Home">
                 <div>
                     <p>Current Block: {this.state.currBlock}</p>
-                    <p className="Curator"> Current Curator:
+                    <div className="Curator"> Current Curator:
                     <Select
                             name="curator-selector"
-                            value={this.state.currentCurator}
+                            value={this.state.currentCuratorAddress}
                             onChange={this.handleCuratorSelection}
                             options={curatorsSelection}
                         />
-                    </p>
+                    </div>
+                    <div>ETH Balance: {this.state.currentBalance}</div>
+                    <div>ToT Balance: </div>
                 </div>
                 <div className="List">
                     <List data={this.state.data} updateDataState={this.updateDataFromChain} />
