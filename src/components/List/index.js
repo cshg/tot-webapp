@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import BlinkingDot from '../BlinkingDot';
+import './style.css';
 
 import getContractConnection, { contractAddress } from '../Contract';
 import Web3 from 'web3';
@@ -51,11 +52,6 @@ class List extends Component {
 									maxWidth: 70,
 								},
 								{
-									Header: "Score",
-									accessor: "score",
-									maxWidth: 80,
-								},
-								{
 									Header: "Name",
 									accessor: "name",
 								},
@@ -63,6 +59,7 @@ class List extends Component {
 									Header: "Address",
 									accessor: "address",
 								},
+								
 							],
 						},
 						{
@@ -71,13 +68,18 @@ class List extends Component {
 								{
 									Header: "Upvote",
 									accessor: "upvote",
-									Cell: (value => <button onClick={() => this.handleUpvote(value)}>+</button>),
+									Cell: (value => <div className="button_vote button_plus" onClick={() => this.handleUpvote(value)}>+</div>),
 									maxWidth: 100,
+								},
+								{
+									Header: "Score",
+									accessor: "score",
+									maxWidth: 80,
 								},
 								{
 									Header: "Downvote",
 									accessor: "downvote",
-									Cell: (value => <button onClick={() => this.handleDownvote(value)}>-</button>),
+									Cell: (value => <div className="button_vote button_minus" onClick={() => this.handleDownvote(value)}>-</div>),
 									maxWidth: 100,
 								}
 							]
