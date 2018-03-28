@@ -1,0 +1,10 @@
+.circle {
+    border-radius: 50%/50%;
+    background: black;
+    width: 25px;
+    height: 25px;
+}
+
+.bg-white {
+    background: white;
+}
