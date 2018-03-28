@@ -29,11 +29,12 @@ class Home extends Component {
             accountAddresses.push(this.web3.eth.accounts[i]);
         }
         accountAddresses.forEach(address => {
+            const randomFrequency = Math.floor(Math.random() * 4) * 0.25;
             data.push({
                 score: contractInstance.voteCount(address).toNumber(),
                 name: 'defaultName',
                 address: address,
-                frequency: 1,
+                frequency: randomFrequency,
             })
         });
 
