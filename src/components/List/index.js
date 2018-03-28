@@ -11,18 +11,16 @@ class List extends Component {
 		const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 		const contractInstance = getContractConnection();
 		const upvoteTargetAddress = value.row.address;
-		// const upvoteData = contractInstance.upvote.getData(upvoteTargetAddress);
+		const upvoteData = contractInstance.upvote.getData(upvoteTargetAddress);
+		const fromAddress = web3.eth.accounts[0];
 
-		// const fromAddress = web3.eth.accounts[0];
-		// console.log('upvoting');
-		// console.log('from:', fromAddress);
-		// console.log('to:', upvoteTargetAddress);
+		console.log('upvoting from:', fromAddress, 'to', upvoteTargetAddress);
 
-		// web3.eth.sendTransaction({
-		// 	to: contractAddress,
-		// 	from: fromAddress,
-		// 	data: upvoteData,
-		// });
+		web3.eth.sendTransaction({
+			to: contractAddress,
+			from: fromAddress,
+			data: upvoteData,
+		});
 
 		this.props.updateDataState();
 	}

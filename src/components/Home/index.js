@@ -19,30 +19,30 @@ class Home extends Component {
     }
 
     componentWillMount() {
+        this.updateDataFromChain();
+    }
+
+    updateDataFromChain = () => {
+        console.log('update data from chain');
         const contractInstance = getContractConnection();
 
-        const numOfAccounts = 4;
-        let accountAddresses = [];
         let data = [];
 
-        for (let i = 0; i < numOfAccounts; i++) {
-            accountAddresses.push(this.web3.eth.accounts[i]);
-        }
         this.web3.eth.accounts.forEach(address => {
             const randomFrequency = Math.floor(Math.random() * 4 + 1) * 0.25;
-            // const text = contractInstance.getText(address);
-            // const frequency = contractInstance.getFrequency(address).toNumber();
-            // const voteCount = contractInstance.voteCount(address).toNumber();
+            const text = contractInstance.getText(address);
+            const frequency = contractInstance.getFrequency(address).toNumber();
+            const voteCount = contractInstance.voteCount(address).toNumber();
             data.push({
                 frequency: randomFrequency,
-                score: Math.ceil(randomFrequency * 6),
+                score: voteCount,
                 name: 'data provider',
                 address: address,
             })
         });
 
         this.setState({
-            currentCurator: accountAddresses[0],
+            currentCurator: this.web3.eth.accounts[0],
             currBlock: this.web3.eth.blockNumber,
             accounts: this.web3.eth.accounts,
             data: data,
@@ -56,7 +56,7 @@ class Home extends Component {
                 <p>Current Block: {this.state.currBlock}</p>
                 <div> Current Curator: </div>
                 <div className="List">
-                    <List data={this.state.data} />
+                    <List data={this.state.data} updateDataState={this.updateDataFromChain} />
                 </div>
             </div>
         );
