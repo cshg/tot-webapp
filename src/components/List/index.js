@@ -9,24 +9,11 @@ import Web3 from 'web3';
 
 class List extends Component {
 	handleUpvote(value) {
-		const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-		const contractInstance = getContractConnection();
-		const upvoteTargetAddress = value.row.address;
-		const upvoteData = contractInstance.upvote.getData(upvoteTargetAddress);
-		const fromAddress = web3.eth.accounts[0];
+		this.props.sendUpvote(value.row.address);
 
-		console.log('upvoting from:', fromAddress, 'to', upvoteTargetAddress);
-
-		web3.eth.sendTransaction({
-			to: contractAddress,
-			from: fromAddress,
-			data: upvoteData,
-		});
-
-		this.props.updateDataState();
 	}
 	handleDownvote(value) {
-		console.log('downvote', value.row);
+		this.props.sendDownvote(value.row.address);
 	}
 
 	render() {
@@ -59,7 +46,7 @@ class List extends Component {
 									Header: "Address",
 									accessor: "address",
 								},
-								
+
 							],
 						},
 						{

@@ -12,11 +12,13 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+        this.contractInstance = getContractConnection();
         const initialAccount = this.web3.eth.accounts[0];
         this.state = {
             currBlock: this.web3.eth.blockNumber,
             currentCuratorAddress: initialAccount,
-            currentBalance: this.web3.fromWei(this.web3.eth.getBalance(initialAccount).toNumber()),
+            currentEthBalance: this.web3.fromWei(this.web3.eth.getBalance(initialAccount).toNumber()),
+            currentToTBalance: this.contractInstance.balanceOf(initialAccount).toNumber(),
             accounts: this.web3.eth.accounts,
             data: [],
         }
@@ -30,21 +32,45 @@ class Home extends Component {
         const selectedCuratorAddress = selectedCurator.value;
         this.setState({
             currentCuratorAddress: selectedCuratorAddress,
-            currentBalance: this.web3.fromWei(this.web3.eth.getBalance(selectedCuratorAddress).toNumber()),
+            currentEthBalance: this.web3.fromWei(this.web3.eth.getBalance(selectedCuratorAddress).toNumber()),
+            currentToTBalance: this.contractInstance.balanceOf(selectedCuratorAddress).toNumber(),
         });
+    }
+
+    sendUpvote = (address) => {
+        const upvoteAddress = this.contractInstance.upvote.getData(address);
+
+        this.web3.eth.sendTransaction({
+            to: contractAddress,
+            from: this.state.currentCuratorAddress,
+            data: upvoteAddress,
+        });
+
+        this.updateDataFromChain();
+    }
+
+    sendDownvote = (address) => {
+        const downvoteAddress = this.contractInstance.downvote.getData(address);
+
+        this.web3.eth.sendTransaction({
+            to: contractAddress,
+            from: this.state.currentCuratorAddress,
+            data: downvoteAddress,
+        });
+
+        this.updateDataFromChain();
     }
 
     updateDataFromChain = () => {
         console.log('update data from chain');
-        const contractInstance = getContractConnection();
 
         let data = [];
 
         this.web3.eth.accounts.forEach(address => {
             const randomFrequency = Math.floor(Math.random() * 4 + 1) * 0.25;
-            const text = contractInstance.getText(address);
-            const frequency = contractInstance.getFrequency(address).toNumber();
-            const voteCount = contractInstance.voteCount(address).toNumber();
+            const text = this.contractInstance.getText(address);
+            const frequency = this.contractInstance.getFrequency(address).toNumber();
+            const voteCount = this.contractInstance.voteCount(address).toNumber();
             data.push({
                 frequency: randomFrequency,
                 score: voteCount,
@@ -70,11 +96,11 @@ class Home extends Component {
                             options={curatorsSelection}
                         />
                     </div>
-                    <div>ETH Balance: {this.state.currentBalance}</div>
-                    <div>ToT Balance: </div>
+                    <div>ETH Balance: {this.state.currentEthBalance}</div>
+                    <div>ToT Balance: {this.state.currentToTBalance}</div>
                 </div>
                 <div className="List">
-                    <List data={this.state.data} updateDataState={this.updateDataFromChain} />
+                    <List data={this.state.data} sendUpvote={this.sendUpvote} sendDownvote={this.sendDownvote} />
                 </div>
             </div>
         );
