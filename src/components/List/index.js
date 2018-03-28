@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import BlinkingDot from '../BlinkingDot';
 
 class List extends Component {
 	handleUpvote(value) {
@@ -35,6 +36,7 @@ class List extends Component {
 								{
 									Header: "Frequency",
 									accessor: "frequency",
+									Cell: (value => <BlinkingDot frequency={value.row.frequency}/>),
 								},
 							],
 						},
