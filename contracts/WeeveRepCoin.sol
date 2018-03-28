@@ -3,7 +3,7 @@ pragma solidity ^0.4.18;
 import "./ConvertLib.sol";
 import "./StandardToken.sol";
 import "./Ownable.sol";
-import "./BondingCurveExp.sol";
+import "./BondingCurve.sol";
 import "./InflationaryToken.sol";
 
 contract WeeveRepCoin is BondingCurve, InflationaryToken {
@@ -31,9 +31,9 @@ contract WeeveRepCoin is BondingCurve, InflationaryToken {
     return ConvertLib.convert(balanceOf(addr),1);
   }
 
-	/**
-	 * @dev Constructor that gives msg.sender all of existing tokens.
-	 */
+  /**
+   * @dev Constructor that gives msg.sender all of existing tokens.
+   */
   function WeeveRepCoin() public {
     owner = msg.sender;
 
@@ -82,6 +82,14 @@ contract WeeveRepCoin is BondingCurve, InflationaryToken {
 
   function voteCount(address entry) public view returns (uint) {
       return providers[entry].score;
+  } 
+  
+   function getFrequency(address entry) public view returns (uint) {
+      return providers[entry].frequency;
+  } 
+  
+   function getText(address entry) public view returns (string) {
+      return providers[entry].text;
   } 
 
 }
