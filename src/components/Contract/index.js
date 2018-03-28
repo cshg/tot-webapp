@@ -9,7 +9,6 @@ function getContractConnection() {
     const WeeveRepCoinContract = web3.eth.contract(WeeveRepCoinABI);
     const weeveRepoCoinContractInstance = WeeveRepCoinContract.at(WEEVE_REP_COIN_CONTRACT_ADDRESS);
 
-
     console.log('contractInstance', weeveRepoCoinContractInstance);
     return weeveRepoCoinContractInstance;
 }

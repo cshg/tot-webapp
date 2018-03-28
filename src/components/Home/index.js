@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 
 import './style.css';
-import mockData from './mockData';
 
 import getContractConnection, { contractAddress } from '../Contract';
 import List from '../List';
@@ -29,29 +28,18 @@ class Home extends Component {
         for (let i = 0; i < numOfAccounts; i++) {
             accountAddresses.push(this.web3.eth.accounts[i]);
         }
-        accountAddresses.forEach(address => {
-            const randomFrequency = Math.floor(Math.random() * 4) * 0.25;
-            const text = contractInstance.getText(address);
-            console.log('text from entry', text);
-            const frequenzy = contractInstance.getFrequency(address).toNumber();
-            console.log('frequency from entry', frequenzy);
+        this.web3.eth.accounts.forEach(address => {
+            const randomFrequency = Math.floor(Math.random() * 4 + 1) * 0.25;
+            // const text = contractInstance.getText(address);
+            // const frequency = contractInstance.getFrequency(address).toNumber();
+            // const voteCount = contractInstance.voteCount(address).toNumber();
             data.push({
-                score: contractInstance.voteCount(address).toNumber(),
+                frequency: randomFrequency,
+                score: Math.ceil(randomFrequency * 6),
                 name: 'data provider',
                 address: address,
-                frequency: randomFrequency,
             })
         });
-
-        const upvote = contractInstance.upvote.getData(accountAddresses[1]);
-
-        this.web3.eth.sendTransaction({
-            to: contractAddress,
-            from: accountAddresses[0],
-            data: upvote,
-        });
-
-        console.log('data', data);
 
         this.setState({
             currentCurator: accountAddresses[0],
@@ -62,7 +50,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log('mockData', mockData);
         return (
             <div className="Home">
                 <h2>Home</h2>
