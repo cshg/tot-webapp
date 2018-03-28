@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-// import logo from './logo.svg';
+import logo from '../../assets/tot.png';
 import './styles.css';
 
 import Home from '../Home';
@@ -12,8 +12,7 @@ class App extends Component {
 		return (
 			<div className="App">
 				<header className="App-header">
-					{/* <img src={logo} className="App-logo" alt="logo" /> */}
-					<h2 >ToT: Curator View</h2>
+					<img src={logo} className="App-logo" alt="logo" />
 				</header>
 				<div className="App-nav">
 					<Router>
