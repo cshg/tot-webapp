@@ -35,10 +35,10 @@ class List extends Component {
 							Header: " Data",
 							columns: [
 								{
-									Header: "Activity",
+									Header: "Data Stream Activity",
 									accessor: "frequency",
 									Cell: (value => <BlinkingDot />),
-									maxWidth: 70,
+									maxWidth: 170,
 								},
 								{
 									Header: "Provider Name",
@@ -92,7 +92,7 @@ class List extends Component {
 						},
 					]}
 				/>
-			</div >
+			</div>
 		);
 	}
 }

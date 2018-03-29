@@ -9,124 +9,123 @@ import getContractConnection, { contractAddress } from '../Contract';
 import List from '../List';
 
 const providerData = [
-    { name: "LT Labs - sensor 1", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
-    { name: "LT Labs - sensor 2", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
-    { name: "LT Labs - sensor 3", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
-    { name: "RegE sensor 1", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
-    { name: "RegE sensor 1", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
-    { name: "Institute 7 - sensor 4", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
-    { name: "Institute 7 - sensor 5", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
-    { name: "Institute 7 - sensor 6", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+	{ name: "Global Weather Corp", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+	{ name: "Deutscher Wetterdienst", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+	{ name: "Best Temp Data Inc.", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+	{ name: "LR Labs Inc", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+	{ name: "RegEx Industries", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
 ]
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-        this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
-        this.contractInstance = getContractConnection();
-        const initialAccount = this.web3.eth.accounts[0];
-        this.state = {
-            currBlock: this.web3.eth.blockNumber,
-            currentCuratorAddress: initialAccount,
-            currentEthBalance: this.web3.fromWei(this.web3.eth.getBalance(initialAccount).toNumber()),
-            currentToTBalance: this.contractInstance.balanceOf(initialAccount).toNumber(),
-            accounts: this.web3.eth.accounts,
-            data: [],
-        }
-    }
+	constructor(props) {
+		super(props);
+		this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+		this.contractInstance = getContractConnection();
+		const initialAccount = this.web3.eth.accounts[0];
+		this.state = {
+			currBlock: this.web3.eth.blockNumber,
+			currentCuratorAddress: initialAccount,
+			currentEthBalance: this.web3.fromWei(this.web3.eth.getBalance(initialAccount).toNumber()),
+			currentToTBalance: this.contractInstance.balanceOf(initialAccount).toNumber(),
+			accounts: this.web3.eth.accounts,
+			data: [],
+		}
+	}
 
-    componentWillMount() {
-        this.updateDataFromChain();
-    }
+	componentWillMount() {
+		this.updateDataFromChain();
+	}
 
-    handleCuratorSelection = (selectedCurator) => {
-        const selectedCuratorAddress = selectedCurator.value;
-        this.setState({
-            currentCuratorAddress: selectedCuratorAddress,
-            currentEthBalance: this.web3.fromWei(this.web3.eth.getBalance(selectedCuratorAddress).toNumber()),
-            currentToTBalance: this.contractInstance.balanceOf(selectedCuratorAddress).toNumber(),
-        });
-    }
+	handleCuratorSelection = (selectedCurator) => {
+		const selectedCuratorAddress = selectedCurator.value;
+		this.setState({
+			currentCuratorAddress: selectedCuratorAddress,
+			currentEthBalance: this.web3.fromWei(this.web3.eth.getBalance(selectedCuratorAddress).toNumber()),
+			currentToTBalance: this.contractInstance.balanceOf(selectedCuratorAddress).toNumber(),
+		});
+	}
 
-    sendUpvote = (address) => {
-        const upvoteAddress = this.contractInstance.upvote.getData(address);
+	sendUpvote = (address) => {
+		const upvoteAddress = this.contractInstance.upvote.getData(address);
 
-        this.web3.eth.sendTransaction({
-            to: contractAddress,
-            from: this.state.currentCuratorAddress,
-            data: upvoteAddress,
-        });
+		this.web3.eth.sendTransaction({
+			to: contractAddress,
+			from: this.state.currentCuratorAddress,
+			data: upvoteAddress,
+		});
 
-        this.updateDataFromChain();
-    }
+		this.updateDataFromChain();
+	}
 
-    sendDownvote = (address) => {
-        const downvoteAddress = this.contractInstance.downvote.getData(address);
+	sendDownvote = (address) => {
+		const downvoteAddress = this.contractInstance.downvote.getData(address);
 
-        this.web3.eth.sendTransaction({
-            to: contractAddress,
-            from: this.state.currentCuratorAddress,
-            data: downvoteAddress,
-        });
+		this.web3.eth.sendTransaction({
+			to: contractAddress,
+			from: this.state.currentCuratorAddress,
+			data: downvoteAddress,
+		});
 
-        this.updateDataFromChain();
-    }
+		this.updateDataFromChain();
+	}
 
-    updateDataFromChain = () => {
-        console.log('update data from chain');
+	updateDataFromChain = () => {
+		console.log('update data from chain');
 
-        let data = [];
+		let data = [];
 
-        let i = 0;
+		let i = 0;
 
-        this.web3.eth.accounts.forEach(address => {
-            const randomFrequency = Math.floor(Math.random() * 4 + 1) * 0.25;
-            const randomTemperature = (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C";
-            const text = this.contractInstance.getText(address);
-            const frequency = this.contractInstance.getFrequency(address).toNumber();
-            const voteCount = this.contractInstance.voteCount(address).toNumber();
-            data.push({
-                frequency: randomFrequency,
-                score: voteCount,
-                name: providerData[i].name,
-                address: address,
-                location: "Berlin",
-                temperature: providerData[i].temperature,
-            });
-            if (i < providerData.length - 2) {
-                i += 1;
-            } else {
-                i = 0;
-            }
-        });
+		this.web3.eth.accounts.forEach(address => {
+			const randomFrequency = Math.floor(Math.random() * 4 + 1) * 0.25;
+			const randomTemperature = (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C";
+			const text = this.contractInstance.getText(address);
+			const frequency = this.contractInstance.getFrequency(address).toNumber();
+			const voteCount = this.contractInstance.voteCount(address).toNumber();
+			data.push({
+				frequency: randomFrequency,
+				score: voteCount,
+				name: providerData[i].name,
+				address: address,
+				location: "Berlin",
+				temperature: providerData[i].temperature,
+			});
+			if (i < providerData.length - 1) {
+				i += 1;
+			} else {
+				i = 0;
+			}
+		});
 
-        this.setState({ data });
-    }
+		this.setState({ data });
+	}
 
-    render() {
-        const curatorsSelection = this.state.accounts.map(address => ({ value: address, label: address }));
-        return (
-            <div className="Home">
-                <h2>Dashboard</h2>
-                <div>
-                    <p>Current Block: {this.state.currBlock}</p>
-                    <div className="Curator"> Current Curator:
-                    <Select
-                            name="curator-selector"
-                            value={this.state.currentCuratorAddress}
-                            onChange={this.handleCuratorSelection}
-                            options={curatorsSelection}
-                        />
-                    </div>
-                    <div>ETH Balance: {this.state.currentEthBalance}</div>
-                    <div style={{ fontSize: 24 }}>ToT Balance: {this.state.currentToTBalance}</div>
-                </div>
-                <div className="List">
-                    <List data={this.state.data} sendUpvote={this.sendUpvote} sendDownvote={this.sendDownvote} />
-                </div>
-            </div>
-        );
-    }
+	render() {
+		const curatorsSelection = this.state.accounts.map(address => ({ value: address, label: address }));
+		return (
+			<div className="Home">
+				<div>
+					<p>
+						{/* <p>Current Block: {this.state.currBlock}</p> */}
+						<div className="Curator">
+							Current Curator:
+							<Select
+								name="curator-selector"
+								value={this.state.currentCuratorAddress}
+								onChange={this.handleCuratorSelection}
+								options={curatorsSelection}
+							/>
+						</div>
+						{/* <div>ETH Balance: {this.state.currentEthBalance}</div> */}
+						<div style={{ fontSize: 24 }}>ToT Balance: {this.state.currentToTBalance}</div>
+					</p>
+				</div>
+				<div className="List">
+					<List data={this.state.data} sendUpvote={this.sendUpvote} sendDownvote={this.sendDownvote} />
+				</div>
+			</div>
+		);
+	}
 }
 
 export default Home;
