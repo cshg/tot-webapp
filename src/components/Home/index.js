@@ -8,15 +8,15 @@ import './style.css';
 import getContractConnection, { contractAddress } from '../Contract';
 import List from '../List';
 
-const providers = [
-    "LT Labs - sensor 1",
-    "LT Labs - sensor 2",
-    "LT Labs - sensor 3",
-    "RegE sensor 1",
-    "RegE sensor 2",
-    "Institute 7 - sensor 4",
-    "Institute 7 - sensor 5",
-    "Institute 7 - sensor 6",
+const providerData = [
+    { name: "LT Labs - sensor 1", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+    { name: "LT Labs - sensor 2", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+    { name: "LT Labs - sensor 3", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+    { name: "RegE sensor 1", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+    { name: "RegE sensor 1", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+    { name: "Institute 7 - sensor 4", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+    { name: "Institute 7 - sensor 5", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
+    { name: "Institute 7 - sensor 6", temperature: (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C" },
 ]
 
 class Home extends Component {
@@ -88,12 +88,12 @@ class Home extends Component {
             data.push({
                 frequency: randomFrequency,
                 score: voteCount,
-                name: providers[i],
+                name: providerData[i].name,
                 address: address,
                 location: "Berlin",
-                temperature: randomTemperature,
+                temperature: providerData[i].temperature,
             });
-            if (i < providers.length - 2) {
+            if (i < providerData.length - 2) {
                 i += 1;
             } else {
                 i = 0;
@@ -107,6 +107,7 @@ class Home extends Component {
         const curatorsSelection = this.state.accounts.map(address => ({ value: address, label: address }));
         return (
             <div className="Home">
+                <h2>Dashboard</h2>
                 <div>
                     <p>Current Block: {this.state.currBlock}</p>
                     <div className="Curator"> Current Curator:
