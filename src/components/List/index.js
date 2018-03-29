@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+
 import BlinkingDot from '../BlinkingDot';
 import './style.css';
 
@@ -40,14 +41,28 @@ class List extends Component {
 									maxWidth: 70,
 								},
 								{
-									Header: "Name",
+									Header: "Provider Name",
 									accessor: "name",
-									style: { fontSize: 20, alignSelf: 'center' }
+									style: { fontSize: 20, alignSelf: 'center' },
+								},
+								{
+									Header: "Location",
+									accessor: "location",
+									style: { fontSize: 20, alignSelf: 'center' },
+									maxWidth: 180,
+								},
+								{
+									Header: "Temperature",
+									accessor: "temperature",
+									maxWidth: 150,
+									style: { fontSize: 24, color: 'red', alignSelf: 'center' },
+									// Cell: (value => (`{ value } C`))
 								},
 								{
 									Header: "Address",
 									accessor: "address",
-									style: { fontSize: 16, alignSelf: 'center' }
+									maxWidth: 100,
+									style: { fontSize: 16, alignSelf: 'center' },
 								},
 
 							],

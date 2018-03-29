@@ -8,6 +8,17 @@ import './style.css';
 import getContractConnection, { contractAddress } from '../Contract';
 import List from '../List';
 
+const providers = [
+    "LT Labs - sensor 1",
+    "LT Labs - sensor 2",
+    "LT Labs - sensor 3",
+    "RegE sensor 1",
+    "RegE sensor 2",
+    "Institute 7 - sensor 4",
+    "Institute 7 - sensor 5",
+    "Institute 7 - sensor 6",
+]
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -66,17 +77,27 @@ class Home extends Component {
 
         let data = [];
 
+        let i = 0;
+
         this.web3.eth.accounts.forEach(address => {
             const randomFrequency = Math.floor(Math.random() * 4 + 1) * 0.25;
+            const randomTemperature = (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C";
             const text = this.contractInstance.getText(address);
             const frequency = this.contractInstance.getFrequency(address).toNumber();
             const voteCount = this.contractInstance.voteCount(address).toNumber();
             data.push({
                 frequency: randomFrequency,
                 score: voteCount,
-                name: 'data provider',
+                name: providers[i],
                 address: address,
-            })
+                location: "Berlin",
+                temperature: randomTemperature,
+            });
+            if (i < providers.length - 2) {
+                i += 1;
+            } else {
+                i = 0;
+            }
         });
 
         this.setState({ data });
