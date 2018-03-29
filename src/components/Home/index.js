@@ -78,9 +78,8 @@ class Home extends Component {
 
 		this.web3.eth.accounts.forEach(address => {
 			const randomFrequency = Math.floor(Math.random() * 4 + 1) * 0.25;
-			const randomTemperature = (Math.round((Math.random() * 2 + 4) * 100)) / 100 + " °C";
-			const text = this.contractInstance.getText(address);
-			const frequency = this.contractInstance.getFrequency(address).toNumber();
+			// const text = this.contractInstance.getText(address);
+			// const frequency = this.contractInstance.getFrequency(address).toNumber();
 			const voteCount = this.contractInstance.voteCount(address).toNumber();
 			data.push({
 				frequency: randomFrequency,

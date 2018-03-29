@@ -5,9 +5,6 @@ import 'react-table/react-table.css';
 import BlinkingDot from '../BlinkingDot';
 import './style.css';
 
-import getContractConnection, { contractAddress } from '../Contract';
-import Web3 from 'web3';
-
 class List extends Component {
 	handleUpvote(value) {
 		this.props.sendUpvote(value.row.address);
