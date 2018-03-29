@@ -37,7 +37,7 @@ class List extends Component {
 								{
 									Header: "Activity",
 									accessor: "frequency",
-									Cell: (value => <BlinkingDot frequency={value.row.frequency} />),
+									Cell: (value => <BlinkingDot />),
 									maxWidth: 70,
 								},
 								{
